@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<style>
+			.area {
+				margin: 20px auto 0px auto;
+			}
+			.mui-input-group:first-child {
+				margin-top: 20px;
+			}
+			.mui-input-group label {
+				width: 30%;
+			}
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 70%;
+			}
+			#autocode {
+                width: 38%;
+                float: left;
+            }
+            #getcode {
+                float: right;
+                width: auto;
+                border-width: 0;
+                margin-top: 2px;
+            }
+            #popover {
+                position: fixed;
+                top: 20%;
+                right: 6px;
+            }
+            #popover .mui-popover-arrow {
+                left: auto;
+                right: 70%;
+            }
+			.mui-checkbox input[type=checkbox],
+			.mui-radio input[type=radio] {
+				top: 6px;
+			}
+			.mui-content-padded {
+				margin-top: 25px;
+			}
+			.mui-btn {
+				padding: 10px;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">注册</h1>
+		</header>
+		<div class="mui-content">
+        
+				<div class="mui-card-header mui-card-media" style="text-align: center; padding-top: 30px;">
+	<img src="images/logo.png" />
+</div>	
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>手机号</label>
+					<input id='account' type="text" class="mui-input-clear mui-input" placeholder="请输入手机号">
+				</div>
+				<div class="mui-input-row">
+					<label>姓名</label>
+					<input id='password' type="password" class="mui-input-clear mui-input" placeholder="请输入姓名">
+				</div>
+                
+       
+       
+      <div class="mui-input-row">
+                    <label>验证码</label>
+                    <input id='autocode' type="text" class="mui-input-clear mui-input" placeholder="请输入验证码">
+                    <button class="mui-btn mui-btn-warning mui-btn-outlined" id="getcode" onclick="mui.toast('已经发送，请耐心等待');return false;">获取验证码</button>
+
+                </div>
+
+			</form>
+			<div class="mui-content-padded">
+				<button id='reg' class="mui-btn mui-btn-block mui-btn-danger">注册</button>
+			</div>
+			<div class="mui-content-padded">
+            <h4>风险警告:</h4>
+				<p>
+所有使用保证金交易的金融产品都具有高风险。它们并非适合所有投资者，您的损失可能超过您的初始投资金额。请确认您完全了解相关风险，如有需要，请寻求专业意见。 FXBTG Financial Limited 受到新西兰金融市场管理局（FMA）的监管（执照号:FSP319786）</p>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/app.js"></script>
+		<script>
+			(function($, doc) {
+				$.init();
+				$.plusReady(function() {
+					var settings = app.getSettings();
+					var regButton = doc.getElementById('reg');
+					var accountBox = doc.getElementById('account');
+					var passwordBox = doc.getElementById('password');
+					var passwordConfirmBox = doc.getElementById('password_confirm');
+					var emailBox = doc.getElementById('email');
+					regButton.addEventListener('tap', function(event) {
+						var regInfo = {
+							account: accountBox.value,
+							password: passwordBox.value,
+							email: emailBox.value
+						};
+						var passwordConfirm = passwordConfirmBox.value;
+						if (passwordConfirm != regInfo.password) {
+							plus.nativeUI.toast('密码两次输入不一致');
+							return;
+						}
+						app.reg(regInfo, function(err) {
+							if (err) {
+								plus.nativeUI.toast(err);
+								return;
+							}
+							plus.nativeUI.toast('注册成功');
+							$.openWindow({
+								url: 'login.html',
+								id: 'login',
+								show: {
+									aniShow: 'pop-in'
+								}
+							});
+						});
+					});
+				});
+			}(mui, document));
+		
+        function disableWait(t, obj, waitMessage) {
+    var objTag = obj.tagName.toLowerCase();
+    if (objTag !== "input" && objTag != "button") {
+        return;
+    }
+
+    var v = objTag !== "input" ? obj.innerText : obj.value;
+    var i = setInterval(function() {
+        if (t > 0) {
+            switch (objTag) {
+                case "input":
+                    obj.value = (--t) + waitMessage;
+                    break;
+                case "button":
+                    obj.innerText = (--t) + waitMessage;
+                    break;
+                default:
+                    break;
+            }
+            obj.disabled = true;
+        } else {
+            window.clearInterval(i);
+            switch (objTag) {
+                case "input":
+                    obj.value = v;
+                    break;
+                case "button":
+                    obj.innerText = v;
+                    break;
+                default:
+                    break;
+            }
+            obj.disabled = false;
+        }
+    }, 1000);
+}</script>
+	</body>
+
+</html>
